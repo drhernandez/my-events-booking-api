@@ -43,7 +43,6 @@ func (listener *amqpEventListener) Listen(eventNames ...string) (<-chan msgqueue
 	if err != nil {
 		return nil, nil, err
 	}
-	defer channel.Close()
 
 	for _, eventName := range eventNames {
 		err := channel.QueueBind("events", eventName, "events", false, nil)
