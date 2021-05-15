@@ -1,8 +1,8 @@
 package amqp
 
 import (
-	"MyEvents/boocking-api/src/models"
-	"MyEvents/boocking-api/src/msgqueue"
+	"MyEvents/booking-api/src/models"
+	"MyEvents/booking-api/src/msgqueue"
 	"encoding/json"
 	"fmt"
 	"github.com/streadway/amqp"
@@ -51,7 +51,7 @@ func (listener *amqpEventListener) Listen(eventNames ...string) (<-chan msgqueue
 		}
 	}
 
-	msgsChan, err := channel.Consume("events", "", false, false, false, false, nil)
+	msgsChan, err := channel.Consume("events", "", true, false, false, false, nil)
 	if err != nil {
 		return nil, nil, err
 	}

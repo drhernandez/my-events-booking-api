@@ -6,16 +6,16 @@ import (
 )
 
 type Event struct {
-	ID        bson.ObjectId `bson:"_id"`
+	ID        bson.ObjectId `bson:"_id,omitempty"`
 	Name      string
 	Duration  int
 	StartDate int64
 	EndDate   int64
-	Location  Location
+	Location  Location `bson:"location,omitempty"`
 }
 
 type Location struct {
-	ID        bson.ObjectId `bson:"_id"`
+	ID        bson.ObjectId `bson:"_id,omitempty"`
 	Name      string
 	Address   string
 	Country   string

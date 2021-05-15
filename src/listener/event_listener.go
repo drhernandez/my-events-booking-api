@@ -1,9 +1,9 @@
 package listener
 
 import (
-	"MyEvents/boocking-api/src/daos"
-	"MyEvents/boocking-api/src/models"
-	"MyEvents/boocking-api/src/msgqueue"
+	"MyEvents/booking-api/src/daos"
+	"MyEvents/booking-api/src/models"
+	"MyEvents/booking-api/src/msgqueue"
 	"context"
 	"gopkg.in/mgo.v2/bson"
 	"log"
@@ -48,7 +48,13 @@ func (ep *eventProcessor) handleEvent(context context.Context, event msgqueue.Ev
 	switch e := event.(type) {
 	case *models.EventCreatedEvent:
 		log.Printf("event %s created: %s", e.ID, e)
-		ep.eventDao.AddEvent(context, &models.Event{ID: bson.ObjectId(e.ID)})
+		newEvent := &models.Event{
+			ID: bson.ObjectIdHex(e.ID),
+			Name: e.Name,
+			StartDate: e.Start.Unix(),
+			EndDate: e.End.Unix(),
+		}
+		ep.eventDao.AddEvent(context, newEvent)
 	case *models.LocationCreatedEvent:
 		log.Printf("location %s created: %s", e.ID, e)
 		ep.locationsDao.AddLocation(context, &models.Location{ID: bson.ObjectId(e.ID)})

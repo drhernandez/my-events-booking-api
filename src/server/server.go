@@ -1,12 +1,13 @@
 package server
 
 import (
-	"MyEvents/boocking-api/src/clients"
-	"MyEvents/boocking-api/src/config"
-	"MyEvents/boocking-api/src/daos"
-	"MyEvents/boocking-api/src/handlers"
-	"MyEvents/boocking-api/src/listener"
-	msgqueue_amqp "MyEvents/boocking-api/src/msgqueue/amqp"
+	"MyEvents/booking-api/src/clients"
+	"MyEvents/booking-api/src/config"
+	"MyEvents/booking-api/src/daos"
+	"MyEvents/booking-api/src/handlers"
+	"MyEvents/booking-api/src/listener"
+	msgqueue_amqp "MyEvents/booking-api/src/msgqueue/amqp"
+	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/streadway/amqp"
 	"net/http"
@@ -27,19 +28,25 @@ func NewServer(config config.ServiceConfig) *mux.Router {
 	if err != nil {
 		panic(err)
 	}
-	eventListener, err := msgqueue_amqp.NewAMQPEventListener(conn, "events")
+	eventsListener, err := msgqueue_amqp.NewAMQPEventListener(conn, "events")
 	if err != nil {
 		panic(err)
 	}
 
+	//kafkaClient := clients.NewKafkaClient(config.KafkaMessageBrokers)
+	//eventsEmitter := kafka.NewKafkaEventEmitter(kafkaClient, "events")
+	//eventsListener := kafka.NewKafkaEventListener(kafkaClient, "events")
+
 	//Async instances
-	eventProcessor := listener.NewEventProcessor(eventListener, eventsDao, locationsDao)
+	eventProcessor := listener.NewEventProcessor(eventsListener, eventsDao, locationsDao)
 	go eventProcessor.ProcessEvent()
 
 	healthHandler := handlers.HealthHandler{}
 	bookingsHandler := handlers.NewBookingsHandler(bookingsDao, eventsEmitter)
 
 	r := mux.NewRouter()
+	r.Use(handlers2.CORS())
+	r.Use(setApplicationJsonContentType)
 	r.Methods(http.MethodGet).Path("/ping").HandlerFunc(healthHandler.PingHandler)
 	r.Methods(http.MethodPost).Path("/bookings").HandlerFunc(bookingsHandler.CreateBooking)
 

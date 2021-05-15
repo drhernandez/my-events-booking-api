@@ -1,7 +1,7 @@
 package amqp
 
 import (
-	"MyEvents/boocking-api/src/msgqueue"
+	"MyEvents/booking-api/src/msgqueue"
 	"encoding/json"
 	"github.com/streadway/amqp"
 )

@@ -1,8 +1,8 @@
 package daos
 
 import (
-	"MyEvents/boocking-api/src/clients"
-	"MyEvents/boocking-api/src/models"
+	"MyEvents/booking-api/src/clients"
+	"MyEvents/booking-api/src/models"
 	"context"
 	"gopkg.in/mgo.v2/bson"
 	"log"

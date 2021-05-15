@@ -1,8 +1,8 @@
 package main
 
 import (
-	"MyEvents/boocking-api/src/config"
-	"MyEvents/boocking-api/src/server"
+	"MyEvents/booking-api/src/config"
+	"MyEvents/booking-api/src/server"
 	"flag"
 	"log"
 	"net/http"

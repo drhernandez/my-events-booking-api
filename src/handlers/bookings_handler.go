@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"MyEvents/boocking-api/src/daos"
-	"MyEvents/boocking-api/src/models"
-	"MyEvents/boocking-api/src/msgqueue"
+	"MyEvents/booking-api/src/daos"
+	"MyEvents/booking-api/src/models"
+	"MyEvents/booking-api/src/msgqueue"
 	"encoding/json"
 	"fmt"
 	"net/http"
